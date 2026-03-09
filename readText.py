@@ -3,16 +3,17 @@ import subprocess
 import re
 
 path = "/var/log/xray/access.log"
+pathIps = "/root/bots/testBots/sendIps/ips.txt"
 
 seen = set()
 
-with open("ips.txt", "r", encoding="utf-8") as db:
+with open(pathIps, "r", encoding="utf-8") as db:
     for line in db:
         seen.add(line.strip())
 
 
 with open(path, "r", encoding="utf-8") as f, \
-     open("ips.txt", "a", encoding="utf-8") as out:
+     open(pathIps, "a", encoding="utf-8") as out:
     for line in f:
         if "accepted" in line and "from " in line:
             m = re.search(r'\bfrom\s+(\d{1,3}(?:\.\d{1,3}){3}):\d+\b', line)
@@ -24,4 +25,3 @@ with open(path, "r", encoding="utf-8") as f, \
             if ip not in seen:
                 seen.add(ip)
                 out.write(ip + "\n")
-
