@@ -5,6 +5,10 @@ from aiogram.types import Message
 from aiogram.filters import Command
 import asyncio
 from dotenv import load_dotenv
+import sys
+sys.path.append("..")
+
+from traffic import get_speed
 
 load_dotenv()
 
@@ -13,6 +17,11 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")
 bot = aiogram.Bot(BOT_TOKEN)
 dp = aiogram.Dispatcher()
 chat_id = 1648413619
+
+
+@dp.message(Command(commands='speed'))
+async def gets_speed(message: Message):
+   await message.answer(get_speed())
 
 @dp.message(Command(commands='traffic'))
 async def send_traffic(message: Message):
