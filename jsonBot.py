@@ -5,7 +5,7 @@ from aiogram.filters import Command
 from aiogram.types import Message
 import subprocess
 
-users = []
+users = {}
 
 pattern = re.compile(r"(?:user|inbound)>>>(.*?)>>>traffic>>>(.*)")
 
@@ -25,8 +25,10 @@ with open("/root/bots/testBots/jsonOutput.txt", "w", encoding="utf-8") as out:
         m = pattern.search(name)
         if m:
             mbit = value * 8 / 1_000_000
-            users.append(f'{m.group(1)} {m.group(2)} {mbit:.2f} Mbit')
-    out.write("\n".join(users))
+            if m.group(1) not in users:
+                users[m.group(1)] = {}
+            users[m.group(1)][m.group(2)] =  f'{mbit:.2f} Mbit'
+    out.write(json.dumps(users, indent=4))
 
 
 
