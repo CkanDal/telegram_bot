@@ -8,15 +8,16 @@ from dotenv import load_dotenv
 import sys
 sys.path.append("..")
 
+from ips import get_ips
 from traffic import get_speed
 
 load_dotenv()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
+chat_id = os.getenv("chat_id")
 
 bot = aiogram.Bot(BOT_TOKEN)
 dp = aiogram.Dispatcher()
-chat_id = 1648413619
 
 
 @dp.message(Command(commands='speed'))
@@ -28,22 +29,15 @@ async def send_traffic(message: Message):
     with open("../jsonOutput.txt", "r", encoding="utf-8") as users:
         await message.answer(users.read())
 
-def read_ips() -> str:
-    with open("ips.txt", 'r', encoding="utf-8") as ips:
-        text = ips.read()
-    return text
-
 @dp.message(Command(commands='ips'))
 async def send_ip(message: Message):
-    text = read_ips()
-    await message.answer(text)
+    await message.answer(get_ips())
 
 async def send_ips_cycle():
     while True:
-        text = read_ips()
-        await bot.send_message(1648413619, text)
+        await bot.send_message(chat_id, get_ips())
         await asyncio.sleep(21600)
-           	
+    
 
 
 async def main():
