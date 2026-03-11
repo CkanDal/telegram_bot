@@ -28,7 +28,7 @@ with open("/root/bots/testBots/jsonOutput.txt", "w", encoding="utf-8") as out:
             if m.group(1) not in users:
                 users[m.group(1)] = {}
             users[m.group(1)][m.group(2)] =  f'{mbit:.2f} Mbit'
-    out.write(json.dumps(users, indent=4))
+    out.write(json.dumps(users, indent=4, sort_keys=True))
 
 
 
