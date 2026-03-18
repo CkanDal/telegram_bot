@@ -1,8 +1,8 @@
 import requests
 import os
 import aiogram
-from aiogram.types import Message
-from aiogram.filters import Command
+from aiogram.types import Message, KeyboardButton, ReplyKeyboardMarkup
+from aiogram.filters import Command, CommandStart
 import asyncio
 from dotenv import load_dotenv
 import sys
@@ -10,6 +10,13 @@ sys.path.append("..")
 
 from ips import get_ips
 from traffic import get_speed
+
+button_1 = KeyboardButton(text='/ips')
+button_2 = KeyboardButton(text='/traffic')
+button_3 = KeyboardButton(text='/speed')
+
+
+keyboard = ReplyKeyboardMarkup(keyboard=[[button_1, button_2 ,button_3]], resize_keyboard=True, one_time_keyboard=True)
 
 load_dotenv()
 
@@ -19,6 +26,10 @@ chat_id = os.getenv("chat_id")
 bot = aiogram.Bot(BOT_TOKEN)
 dp = aiogram.Dispatcher()
 
+
+@dp.message(CommandStart())
+async def start(message: Message):
+    await message.answer(text='Which commands I do execute ?', reply_markup=keyboard)
 
 @dp.message(Command(commands='speed'))
 async def gets_speed(message: Message):
