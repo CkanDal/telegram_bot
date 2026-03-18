@@ -16,7 +16,7 @@ button_2 = KeyboardButton(text='/traffic')
 button_3 = KeyboardButton(text='/speed')
 
 
-keyboard = ReplyKeyboardMarkup(keyboard=[[button_1, button_2 ,button_3]], resize_keyboard=True, one_time_keyboard=True)
+keyboard = ReplyKeyboardMarkup(keyboard=[[button_1, button_2 ,button_3]], resize_keyboard=True)
 
 load_dotenv()
 
